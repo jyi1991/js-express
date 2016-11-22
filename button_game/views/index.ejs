@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Button Game</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script type ="text/javascript" src="/socket.io/socket.io.js"></script>
+    <script type = "text/javascript">
+      $(document).ready(function(){
+        var socket = io.connect();
+
+          $('#push').click(function(){
+            socket.emit("push_button",{action:"button pushed"});
+          });
+
+          $('#reset').click(function(){
+            socket.emit("reset_counter",{action:"reset counter"});
+          });
+
+        socket.on('push_counter', function(data){
+          $('#message').html('The button has been pushed '+JSON.stringify(data.response)+' time(s)');
+        });
+
+        socket.on('reset_response', function (data){
+          $('#message').html('');
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <h3 id = "message"></h3>
+    <h4> Push button to update the count</h4>
+    <button id = "push">Push</button>
+    <button id = "reset"> Reset to 0</button>
+  </body>
+</html>
